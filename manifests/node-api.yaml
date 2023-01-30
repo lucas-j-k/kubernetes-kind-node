@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-node-api
+spec:
+  selector:
+    app: kube-node-api
+  ports:
+    - port: 80
+      targetPort: 3000
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kube-node-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: kube-node-api
+  template:
+    metadata:
+      labels:
+        app: kube-node-api
+    spec:
+      containers:
+        - name: kube-node-api
+          image: localhost:5001/kube-node-test_api:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: '3000'
+          imagePullPolicy: Always
