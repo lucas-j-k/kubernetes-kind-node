@@ -15,7 +15,7 @@ kind: Deployment
 metadata:
   name: kube-node-api
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: kube-node-api

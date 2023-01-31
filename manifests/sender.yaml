@@ -1,0 +1,28 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: kube-node-sender
+spec:
+  schedule: "*/3 * * * *"
+  suspend: false
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: kube-node-sender
+            image: localhost:5001/kube-node-test_sender:latest
+            env:
+              - name: API_SERVICE
+                valueFrom:
+                  configMapKeyRef:
+                      name: env-config
+                      key: API_SERVICE
+              - name: CRON_SEND_LIMIT
+                valueFrom:
+                  configMapKeyRef:
+                      name: env-config
+                      key: CRON_SEND_LIMIT
+            imagePullPolicy: Always
+          restartPolicy: Never

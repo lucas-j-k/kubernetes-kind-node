@@ -1,0 +1,9 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: env-config
+data:
+    ENV: dev
+    API_SERVICE: kube-node-api
+    CRON_SEND_LIMIT: '10'

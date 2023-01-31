@@ -10,12 +10,13 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT;
 
-app.get("/", (req: Request, res: Response) => {
-  res.status(200).json({ data: 'This is a response from the node api endpoint at root /'});
+app.get("/log", (req: Request, res: Response) => {
+  const { data } = req.query;
+  console.log(`Data received :: ${data} at ${new Date()}`);
+  res.status(200).json({ data: 'success'});
 });
 
 app.get("/status", (req: Request, res: Response) => {
-  console.log('Status endpoint hit');
   res.status(200).json({ data: 'Server Healthcheck succeeded' });
 });
 
