@@ -1,19 +1,19 @@
 #!/bin/bash
-# deploy resources to cluster
 
-# User for dashboard
-echo Creating dashboard user...
-kubectl apply -f ./manifests/restricted-user.yaml
-
+################
 # ConfigMap
+# ENV variables to inject into pods
+################
 echo Creating configMap...
 kubectl apply -f ./manifests/configmap.yaml
 
 echo deploying API Ingress...
 kubectl apply -f ./manifests/api-ingress.yaml
 
-
-# API Server
+################
+# API Server 
+# Node + Express server
+################
 echo Building API Server...
 docker build -t localhost:5001/kube-node-test_api:latest ./api
 docker push localhost:5001/kube-node-test_api:latest
@@ -25,22 +25,19 @@ echo refreshing [Api] pods...
 kubectl rollout restart deployment kube-node-api
 
 
-# Kubernetes Dashboard
-echo Deploying K8s dashboard...
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
-
-kubectl get pods
-kubectl get pods -n kubernetes-dashboard
-
-
-# Cronjob to generate requests
+################
+# Cronjob 
+################
 echo Deploying CronJob...
 docker build -t localhost:5001/kube-node-test_sender:latest ./sender
 docker push localhost:5001/kube-node-test_sender:latest
 
 kubectl apply -f ./manifests/sender.yaml
 
-echo Pods:
-kubectl get pods --watch
+################
+# Print out deployed pods
+################
+echo Initialised Pods:
+kubectl get pods
 
 

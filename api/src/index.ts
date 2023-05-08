@@ -1,9 +1,10 @@
 /**
- * Express Server Entrypoint
+ * Express Server
+ * Exposes a simple /log endpoint that just logs out the received querystring.data param
  */
 
-import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
+import express, { Express, Request, Response } from "express";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -13,13 +14,15 @@ const port = process.env.PORT;
 app.get("/log", (req: Request, res: Response) => {
   const { data } = req.query;
   console.log(`Data received :: ${data} at ${new Date()}`);
-  res.status(200).json({ data: 'success'});
+  res.status(200).json({ data: "success" });
 });
 
 app.get("/status", (req: Request, res: Response) => {
-  res.status(200).json({ data: 'Server Healthcheck succeeded' });
+  res.status(200).json({ data: "Server Healthcheck succeeded" });
 });
 
 app.listen(port, () => {
-  console.log(`[server]: Express Server is running at http://localhost:${port}`);
+  console.log(
+    `[server]: Express Server is running at http://localhost:${port}`
+  );
 });
